@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Trophy, Sparkles, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import TaskCard from '@/components/challenges/TaskCard';
 import RadiusSlider from '@/components/dashboard/RadiusSlider';
 import GeoStatusBanner from '@/components/dashboard/GeoStatusBanner';
+import TaskFeedItem from '@/components/dashboard/TaskFeedItem';
 
 // Haversine formula — returns distance in miles between two lat/lng points
 function haversineDistance(lat1, lon1, lat2, lon2) {
@@ -157,19 +157,19 @@ export default function Home() {
 
         {/* Task Feed */}
         {isLoading ? (
-          <div className="grid grid-cols-2 gap-3">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-2xl bg-muted animate-pulse h-48" />
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="rounded-2xl bg-muted animate-pulse h-52" />
             ))}
           </div>
         ) : (
           <AnimatePresence mode="popLayout">
             {filteredTasks.length > 0 ? (
-              <motion.div className="grid grid-cols-2 gap-3">
+              <div className="space-y-4">
                 {filteredTasks.map((task, i) => (
-                  <TaskCard key={task.id} task={task} index={i} />
+                  <TaskFeedItem key={task.id} task={task} user={user} index={i} />
                 ))}
-              </motion.div>
+              </div>
             ) : (
               <motion.div
                 key="empty"
