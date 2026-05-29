@@ -1,0 +1,43 @@
+{
+  "name": "Submission",
+  "type": "object",
+  "properties": {
+    "image_url": {
+      "type": "string",
+      "description": "URL of the submitted image"
+    },
+    "task_id": {
+      "type": "string",
+      "description": "ID of the task this submission is for"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "ID of the user who submitted"
+    },
+    "user_name": {
+      "type": "string",
+      "description": "Display name of the submitter"
+    },
+    "community_votes": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of community upvotes"
+    },
+    "voters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of user IDs who voted"
+    },
+    "caption": {
+      "type": "string",
+      "description": "Optional caption for the submission"
+    }
+  },
+  "required": [
+    "image_url",
+    "task_id",
+    "user_id"
+  ]
+}

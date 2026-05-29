@@ -1,0 +1,36 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "user"
+      ],
+      "default": "user"
+    },
+    "total_points": {
+      "type": "number",
+      "default": 0,
+      "description": "Total points earned by the user"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "User's last known latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "User's last known longitude"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Short user bio"
+    },
+    "avatar_url": {
+      "type": "string",
+      "description": "Profile avatar URL"
+    }
+  },
+  "required": []
+}

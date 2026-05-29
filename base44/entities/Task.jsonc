@@ -1,0 +1,61 @@
+{
+  "name": "Task",
+  "type": "object",
+  "properties": {
+    "prompt_text": {
+      "type": "string",
+      "description": "The challenge prompt or description"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "photography",
+        "fitness",
+        "exploration",
+        "food",
+        "art",
+        "social",
+        "nature",
+        "culture"
+      ],
+      "description": "Challenge category"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard",
+        "extreme"
+      ],
+      "default": "medium",
+      "description": "Difficulty level of the challenge"
+    },
+    "point_value": {
+      "type": "number",
+      "description": "Points awarded for completing this challenge"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Location latitude"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Location longitude"
+    },
+    "location_name": {
+      "type": "string",
+      "description": "Human-readable location name"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Cover image for the challenge"
+    }
+  },
+  "required": [
+    "prompt_text",
+    "category",
+    "difficulty",
+    "point_value"
+  ]
+}
