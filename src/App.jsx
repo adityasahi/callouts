@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 import { AnimatePresence, motion } from 'framer-motion';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTheme } from '@/lib/useTheme';
 import SplashScreen from '@/components/SplashScreen';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -83,6 +84,7 @@ const AuthenticatedApp = () => {
 
 function App() {
   const [splashDone, setSplashDone] = useState(false);
+  useTheme(); // initializes and syncs theme from localStorage on mount
 
   return (
     <AuthProvider>

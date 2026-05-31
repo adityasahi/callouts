@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import DareZoneLogo from '@/components/DareZoneLogo';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
@@ -48,6 +49,9 @@ export default function AppLayout() {
         <div className="max-w-lg mx-auto flex items-center gap-2.5 px-4 py-2.5">
           <DareZoneLogo />
           <span className="font-heading font-bold text-lg tracking-tight text-foreground">DareZone</span>
+          <div className="ml-auto">
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
