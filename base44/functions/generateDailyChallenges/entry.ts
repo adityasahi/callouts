@@ -14,6 +14,11 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
 
+    const user = await base44.auth.me();
+    if (!user || user.role !== 'admin') {
+      return Response.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
+    }
+
     const result = await base44.asServiceRole.integrations.Core.InvokeLLM({
       prompt: `You are a task generator for a location-based social challenge app. Generate 5 distinct, fun, and quirky real-world challenges for people in a local community. Each challenge must have: a Prompt Text (funny, specific, doable in under 15 minutes), a Category (creative, social, exploration, fitness, or wildcard), a Difficulty Level (easy = 10 points, medium = 25 points, hard = 50 points). Return ONLY a raw JSON array with no markdown, no code fences. Each item: { "prompt_text": string, "category": string, "difficulty": string }`,
       response_json_schema: {
