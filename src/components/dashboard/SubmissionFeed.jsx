@@ -1,6 +1,6 @@
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Heart, ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
+import { Heart, ThumbsDown, ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,35 +19,28 @@ function SubmissionRow({ sub, user, onCommentClick }) {
   const queryClient = useQueryClient();
   const hasVoted = sub.voters?.includes(user?.id);
 
-  const voteMutation = useMutation({
-    mutationFn: async () => {
+  const vote = useMutation({
+    mutationFn: async (direction) => {
       if (!user) { toast.error('Log in to vote'); return; }
       const voters = sub.voters || [];
-      if (voters.includes(user.id)) { toast.error("You've already upvoted this"); return; }
+      // Strict one-vote-per-user enforcement
+      if (voters.includes(user.id)) { toast.error("You've already voted on this"); return; }
+      const delta = direction === 'up' ? 1 : -1;
       await base44.entities.Submission.update(sub.id, {
-        community_votes: (sub.community_votes || 0) + 1,
+        community_votes: (sub.community_votes || 0) + delta,
         voters: [...voters, user.id],
       });
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['submissions-feed', sub.task_id] }),
   });
 
-  const votes = sub.community_votes || 0;
-  const isNearBuried = votes <= -3 && votes >= -4;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -6 }}
-      className="flex flex-col gap-2 bg-card border border-border rounded-xl p-3"
+      className="flex gap-3 bg-card border border-border rounded-xl p-3 items-start"
     >
-      {isNearBuried && (
-        <div className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1">
-          ⚠️ Being buried by the community
-        </div>
-      )}
-      <div className="flex gap-3 items-start">
       {/* Thumbnail */}
       {sub.image_url && (
         <img src={sub.image_url} alt="" className="w-14 h-14 rounded-lg object-cover shrink-0" />
@@ -73,15 +66,26 @@ function SubmissionRow({ sub, user, onCommentClick }) {
 
         {/* Upvote */}
         <button
-          onClick={() => voteMutation.mutate()}
+          disabled={hasVoted}
+          onClick={() => vote.mutate('up')}
           className={`flex flex-col items-center gap-0.5 transition-colors ${
-            hasVoted ? 'text-primary' : 'text-muted-foreground hover:text-primary'
+            hasVoted ? 'text-primary opacity-70 cursor-not-allowed' : 'text-muted-foreground hover:text-primary'
           }`}
         >
           <Heart className={`w-4 h-4 ${hasVoted ? 'fill-primary' : ''}`} />
-          <span className="text-[10px] font-medium">{votes}</span>
+          <span className="text-[10px] font-medium">{sub.community_votes || 0}</span>
         </button>
-      </div>
+
+        {/* Downvote */}
+        <button
+          disabled={hasVoted}
+          onClick={() => vote.mutate('down')}
+          className={`flex flex-col items-center gap-0.5 transition-colors ${
+            hasVoted ? 'opacity-30 cursor-not-allowed' : 'text-muted-foreground hover:text-destructive'
+          }`}
+        >
+          <ThumbsDown className="w-4 h-4" />
+        </button>
       </div>
     </motion.div>
   );
@@ -93,7 +97,10 @@ export default function SubmissionFeed({ taskId, user }) {
 
   const { data: allSubmissions = [] } = useQuery({
     queryKey: ['submissions-feed', taskId],
-    queryFn: () => base44.entities.Submission.filter({ task_id: taskId }, '-community_votes'),
+    queryFn: async () => {
+      const all = await base44.entities.Submission.filter({ task_id: taskId }, '-community_votes');
+      return all.filter(s => s.status !== 'buried');
+    },
   });
 
   // Hide buried submissions from the feed

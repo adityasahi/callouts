@@ -23,6 +23,15 @@ export default function CompleteTaskModal({ task, user, open, onClose, onSuccess
   const handleSubmit = async () => {
     if (!file) { toast.error('Please select a photo first'); return; }
     setUploading(true);
+
+    // Rate limit check
+    const rateLimitRes = await base44.functions.invoke('checkSubmissionRateLimit', {});
+    if (!rateLimitRes.data?.allowed) {
+      toast.error(rateLimitRes.data?.message || 'Submission limit reached. Try again later.');
+      setUploading(false);
+      return;
+    }
+
     const { file_url } = await base44.integrations.Core.UploadFile({ file });
     await base44.entities.Submission.create({
       image_url: file_url,

@@ -39,15 +39,15 @@ export default function AppLayout() {
 
   return (
     <div className="min-h-screen bg-background font-body">
-      <main className="pb-20">
+      <main className="pt-14 pb-20">
         <Outlet />
       </main>
 
       {/* Top Nav Bar with Logo */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-xl border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-xl border-b border-border safe-top">
         <div className="max-w-lg mx-auto flex items-center gap-2.5 px-4 py-2.5">
           <DareZoneLogo />
-          <span className="font-heading font-bold text-lg tracking-tight">DareZone</span>
+          <span className="font-heading font-bold text-lg tracking-tight text-foreground">DareZone</span>
         </div>
       </header>
 

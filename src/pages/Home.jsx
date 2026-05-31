@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Trophy, Sparkles, Plus } from 'lucide-react';
+import EmptyFeedState from '@/components/dashboard/EmptyFeedState';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import RadiusSlider from '@/components/dashboard/RadiusSlider';
@@ -173,17 +174,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <motion.div
-                key="empty"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="text-center py-14 text-muted-foreground"
-              >
-                <MapPin className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                <p className="text-sm font-medium">No challenges within {radius} miles</p>
-                <p className="text-xs mt-1">Try increasing the radius slider above</p>
-              </motion.div>
+              <EmptyFeedState radius={radius} />
             )}
           </AnimatePresence>
         )}
