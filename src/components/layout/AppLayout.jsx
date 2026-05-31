@@ -48,7 +48,7 @@ export default function AppLayout() {
       <header className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-xl border-b border-border safe-top" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="max-w-lg mx-auto flex items-center gap-2.5 px-4 py-2.5">
           <DareZoneLogo />
-          <span className="font-heading font-bold text-lg tracking-tight text-foreground">DareZone</span>
+          <span className="font-heading font-bold text-lg tracking-tight text-foreground">Callouts</span>
           <div className="ml-auto">
             <ThemeToggle />
           </div>

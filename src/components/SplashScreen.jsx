@@ -64,7 +64,7 @@ export default function SplashScreen({ onDone }) {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="font-heading text-4xl font-bold text-white tracking-tight"
           >
-            DareZone
+            Callouts
           </motion.h1>
 
           <motion.p
