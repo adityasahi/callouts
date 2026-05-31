@@ -57,5 +57,41 @@
     "prompt_text",
     "category",
     "submitted_by_id"
-  ]
+  ],
+  "rls": {
+    "create": {
+      "data.submitted_by_id": "{{user.id}}"
+    },
+    "read": {
+      "user_condition": {
+        "id": {
+          "$exists": true
+        }
+      }
+    },
+    "update": {
+      "$or": [
+        {
+          "data.submitted_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.submitted_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
 }

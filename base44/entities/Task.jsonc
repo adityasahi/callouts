@@ -76,7 +76,13 @@
         "role": "admin"
       }
     },
-    "read": {},
+    "read": {
+      "user_condition": {
+        "id": {
+          "$exists": true
+        }
+      }
+    },
     "update": {
       "user_condition": {
         "role": "admin"

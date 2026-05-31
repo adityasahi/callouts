@@ -51,8 +51,16 @@
     "user_id"
   ],
   "rls": {
-    "create": {},
-    "read": {},
+    "create": {
+      "data.user_id": "{{user.id}}"
+    },
+    "read": {
+      "user_condition": {
+        "id": {
+          "$exists": true
+        }
+      }
+    },
     "update": {
       "$or": [
         {
