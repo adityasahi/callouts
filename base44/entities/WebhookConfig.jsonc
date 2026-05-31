@@ -26,6 +26,11 @@
       "type": "string",
       "format": "date-time",
       "description": "Timestamp of the last successful dispatch"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional description of this webhook's purpose"
     }
   },
   "required": [

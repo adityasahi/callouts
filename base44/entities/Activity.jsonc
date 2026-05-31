@@ -36,6 +36,11 @@
       "type": "boolean",
       "default": false,
       "description": "Whether the user has read this notification"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional additional description or context for this activity"
     }
   },
   "required": [
