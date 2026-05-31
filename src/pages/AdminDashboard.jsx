@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Shield, ListChecks, Image } from 'lucide-react';
+import { Shield, ListChecks, Image, Webhook } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminTasksTable from '@/components/admin/AdminTasksTable';
 import AdminSubmissionsTable from '@/components/admin/AdminSubmissionsTable';
+import WebhookSettings from '@/components/admin/WebhookSettings';
 
 export default function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -56,6 +57,9 @@ export default function AdminDashboard() {
           <TabsTrigger value="submissions" className="gap-2">
             <Image className="w-4 h-4" /> Submissions
           </TabsTrigger>
+          <TabsTrigger value="developer" className="gap-2">
+            <Webhook className="w-4 h-4" /> Developer
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="tasks">
@@ -64,6 +68,10 @@ export default function AdminDashboard() {
 
         <TabsContent value="submissions">
           <AdminSubmissionsTable />
+        </TabsContent>
+
+        <TabsContent value="developer">
+          <WebhookSettings />
         </TabsContent>
       </Tabs>
     </div>
