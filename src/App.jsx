@@ -17,6 +17,7 @@ import ChallengeDetail from '@/pages/ChallengeDetail';
 import Leaderboard from '@/pages/Leaderboard';
 import Legends from '@/pages/Legends';
 import VotingBooth from '@/pages/VotingBooth';
+import Activity from '@/pages/Activity';
 import Profile from '@/pages/Profile';
 
 const AuthenticatedApp = () => {
@@ -53,6 +54,7 @@ const AuthenticatedApp = () => {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/legends" element={<Legends />} />
           <Route path="/voting-booth" element={<VotingBooth />} />
+          <Route path="/activity" element={<Activity />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>

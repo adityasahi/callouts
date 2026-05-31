@@ -58,12 +58,12 @@
     "faction": {
       "type": "string",
       "enum": [
-        "Wolves",
-        "Ravens",
-        "Vipers",
-        "Phoenix"
+        "Northside",
+        "Southside",
+        "Eastside",
+        "Westside"
       ],
-      "description": "The faction this user belongs to"
+      "description": "Geo-assigned faction based on user's location relative to city median"
     }
   },
   "required": []

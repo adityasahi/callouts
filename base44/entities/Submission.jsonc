@@ -21,7 +21,7 @@
     "community_votes": {
       "type": "number",
       "default": 0,
-      "description": "Number of community upvotes"
+      "description": "Number of community upvotes (can go negative)"
     },
     "voters": {
       "type": "array",
@@ -33,6 +33,15 @@
     "caption": {
       "type": "string",
       "description": "Optional caption for the submission"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "buried"
+      ],
+      "default": "active",
+      "description": "Moderation status. Buried submissions are hidden from feeds."
     }
   },
   "required": [

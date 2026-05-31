@@ -1,0 +1,45 @@
+{
+  "name": "Activity",
+  "type": "object",
+  "properties": {
+    "receiving_user_id": {
+      "type": "string",
+      "description": "ID of the user who receives this notification"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "upvote",
+        "comment",
+        "approved",
+        "streak"
+      ],
+      "description": "Type of activity notification"
+    },
+    "actor_alter_ego": {
+      "type": "string",
+      "description": "Alter-ego name of the user who triggered the activity"
+    },
+    "task_prompt_text": {
+      "type": "string",
+      "description": "The prompt text of the related task"
+    },
+    "points_earned": {
+      "type": "number",
+      "description": "Points earned (for approved type)"
+    },
+    "streak_days": {
+      "type": "number",
+      "description": "Streak length in days (for streak type)"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the user has read this notification"
+    }
+  },
+  "required": [
+    "receiving_user_id",
+    "type"
+  ]
+}
