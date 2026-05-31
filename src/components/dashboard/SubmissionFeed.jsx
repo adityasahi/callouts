@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import CommentThreadModal from './CommentThreadModal';
+import LazyImage from '@/components/ui/LazyImage';
 
 function CommentCount({ submissionId }) {
   const { data: comments = [] } = useQuery({
@@ -43,7 +44,12 @@ function SubmissionRow({ sub, user, onCommentClick }) {
     >
       {/* Thumbnail */}
       {sub.image_url && (
-        <img src={sub.image_url} alt="" className="w-14 h-14 rounded-lg object-cover shrink-0" />
+        <LazyImage
+          src={sub.image_url}
+          alt=""
+          wrapperClassName="w-14 h-14 rounded-lg shrink-0"
+          className="w-full h-full object-cover"
+        />
       )}
 
       <div className="flex-1 min-w-0">

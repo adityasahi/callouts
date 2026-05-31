@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Upload, Loader2, CheckCircle, Zap, ImagePlus } from 'lucide-react';
 import { toast } from 'sonner';
+import { compressImageToWebP } from '@/lib/compressImage';
 
 export default function CompleteTaskModal({ task, user, open, onClose, onSuccess }) {
   const [caption, setCaption] = useState('');
@@ -32,7 +33,8 @@ export default function CompleteTaskModal({ task, user, open, onClose, onSuccess
       return;
     }
 
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const compressed = await compressImageToWebP(file);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file: compressed });
     await base44.entities.Submission.create({
       image_url: file_url,
       task_id: task.id,
