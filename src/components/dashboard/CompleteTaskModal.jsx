@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Upload, Loader2, CheckCircle, Zap, ImagePlus } from 'lucide-react';
 import { toast } from 'sonner';
-import { compressImageToWebP } from '@/lib/compressImage';
 
 export default function CompleteTaskModal({ task, user, open, onClose, onSuccess }) {
   const [caption, setCaption] = useState('');
@@ -25,25 +24,20 @@ export default function CompleteTaskModal({ task, user, open, onClose, onSuccess
     if (!file) { toast.error('Please select a photo first'); return; }
     setUploading(true);
 
-    // Rate limit check
-    const rateLimitRes = await base44.functions.invoke('checkSubmissionRateLimit', {});
-    if (!rateLimitRes.data?.allowed) {
-      toast.error(rateLimitRes.data?.message || 'Submission limit reached. Try again later.');
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+
+    const res = await base44.functions.invoke('submitProof', {
+      image_url: file_url,
+      task_id: task.id,
+      caption,
+    });
+
+    if (!res.data?.ok) {
+      toast.error(res.data?.error || 'Failed to submit. Try again.');
       setUploading(false);
       return;
     }
 
-    const compressed = await compressImageToWebP(file);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file: compressed });
-    await base44.entities.Submission.create({
-      image_url: file_url,
-      task_id: task.id,
-      user_id: user.id,
-      user_name: user.full_name || 'Anonymous',
-      community_votes: 0,
-      voters: [],
-      caption,
-    });
     const newPoints = (user.total_points || 0) + (task.point_value || 0);
     await base44.auth.updateMe({ total_points: newPoints });
     setUploading(false);

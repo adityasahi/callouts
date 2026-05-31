@@ -66,11 +66,16 @@ export default function Home() {
     queryFn: () => base44.entities.User.list('-total_points', 3),
   });
 
-  // Filter tasks by radius when coords are available; show all if no coords
+  // Filter tasks by radius and expiry
   const filteredTasks = useMemo(() => {
-    if (!userCoords) return tasks;
-    return tasks.filter((task) => {
-      if (task.latitude == null || task.longitude == null) return true; // no coords → always show
+    const now = Date.now();
+    const nonExpired = tasks.filter((task) => {
+      if (task.expires_at && new Date(task.expires_at).getTime() < now) return false;
+      return true;
+    });
+    if (!userCoords) return nonExpired;
+    return nonExpired.filter((task) => {
+      if (task.latitude == null || task.longitude == null) return true;
       const dist = haversineDistance(userCoords.lat, userCoords.lng, task.latitude, task.longitude);
       return dist <= radius;
     });
