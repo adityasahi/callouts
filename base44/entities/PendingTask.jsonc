@@ -1,0 +1,61 @@
+{
+  "name": "PendingTask",
+  "type": "object",
+  "properties": {
+    "prompt_text": {
+      "type": "string",
+      "description": "The suggested challenge prompt"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "photography",
+        "fitness",
+        "exploration",
+        "food",
+        "art",
+        "social",
+        "nature",
+        "culture",
+        "wildcard",
+        "creative"
+      ],
+      "description": "Challenge category"
+    },
+    "submitted_by_id": {
+      "type": "string",
+      "description": "User ID of the submitter"
+    },
+    "submitted_by_name": {
+      "type": "string",
+      "description": "Alter-ego or display name of submitter"
+    },
+    "upvotes": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of community upvotes"
+    },
+    "voters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of user IDs who upvoted"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "promoted",
+        "rejected"
+      ],
+      "default": "pending",
+      "description": "Current status of the pending task"
+    }
+  },
+  "required": [
+    "prompt_text",
+    "category",
+    "submitted_by_id"
+  ]
+}

@@ -2,12 +2,13 @@ import { useState, useEffect, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Trophy, Sparkles, Flame } from 'lucide-react';
+import { MapPin, Trophy, Sparkles, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import RadiusSlider from '@/components/dashboard/RadiusSlider';
 import GeoStatusBanner from '@/components/dashboard/GeoStatusBanner';
 import TaskFeedItem from '@/components/dashboard/TaskFeedItem';
+import SuggestChallengeModal from '@/components/voting/SuggestChallengeModal';
 
 // Haversine formula — returns distance in miles between two lat/lng points
 function haversineDistance(lat1, lon1, lat2, lon2) {
@@ -24,6 +25,7 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [suggestOpen, setSuggestOpen] = useState(false);
   const [radius, setRadius] = useState(20);
   const [userCoords, setUserCoords] = useState(null); // { lat, lng }
   const [geoStatus, setGeoStatus] = useState('loading'); // loading | granted | denied
@@ -75,7 +77,7 @@ export default function Home() {
   const nearbyCount = filteredTasks.length;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       {/* Hero Header */}
       <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-accent px-6 pt-12 pb-10">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4" />
@@ -185,6 +187,26 @@ export default function Home() {
             )}
           </AnimatePresence>
         )}
+
+      {/* FAB */}
+      {user && (
+        <motion.button
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.4, type: 'spring', stiffness: 300, damping: 20 }}
+          onClick={() => setSuggestOpen(true)}
+          className="fixed bottom-24 right-4 z-40 flex items-center gap-2 bg-primary text-primary-foreground font-heading font-semibold text-sm px-4 py-3 rounded-full shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-transform"
+        >
+          <Plus className="w-4 h-4" />
+          Suggest a Challenge
+        </motion.button>
+      )}
+
+      <SuggestChallengeModal
+        open={suggestOpen}
+        onClose={() => setSuggestOpen(false)}
+        user={user}
+      />
 
         {/* Top Players */}
         {topUsers.length > 0 && (

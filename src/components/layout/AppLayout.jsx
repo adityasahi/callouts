@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
-  { path: '/challenges', icon: MapPin, label: 'Challenges' },
+  { path: '/challenges', icon: MapPin, label: 'Explore' },
+  { path: '/voting-booth', emoji: '🗳️', label: 'Vote' },
   { path: '/legends', emoji: '🏆', label: 'Legends' },
   { path: '/profile', icon: User, label: 'Profile' },
 ];
