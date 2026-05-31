@@ -16,7 +16,9 @@
         "art",
         "social",
         "nature",
-        "culture"
+        "culture",
+        "wildcard",
+        "creative"
       ],
       "description": "Challenge category"
     },
@@ -26,7 +28,8 @@
         "easy",
         "medium",
         "hard",
-        "extreme"
+        "extreme",
+        "flash"
       ],
       "default": "medium",
       "description": "Difficulty level of the challenge"
@@ -50,6 +53,15 @@
     "image_url": {
       "type": "string",
       "description": "Cover image for the challenge"
+    },
+    "source": {
+      "type": "string",
+      "description": "Origin of the task, e.g. 'AI Generated'"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional expiry datetime for flash challenges"
     }
   },
   "required": [
