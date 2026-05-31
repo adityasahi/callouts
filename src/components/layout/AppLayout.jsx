@@ -6,6 +6,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import DareZoneLogo from '@/components/DareZoneLogo';
 import ThemeToggle from '@/components/ThemeToggle';
+import AppFooter from '@/components/layout/AppFooter';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
@@ -54,6 +55,8 @@ export default function AppLayout() {
           </div>
         </div>
       </header>
+
+      <AppFooter />
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-t border-border" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>

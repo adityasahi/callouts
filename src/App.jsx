@@ -25,6 +25,8 @@ import Activity from '@/pages/Activity';
 import Profile from '@/pages/Profile';
 import AdminDashboard from '@/pages/AdminDashboard';
 import AdminRoute from '@/components/AdminRoute';
+import About from '@/pages/About';
+import Contact from '@/pages/Contact';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -73,6 +75,8 @@ const AuthenticatedApp = () => {
               <Route path="/activity" element={<Activity />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
             </Route>
           </Route>
           <Route path="*" element={<PageNotFound />} />
