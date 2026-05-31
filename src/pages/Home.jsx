@@ -10,6 +10,7 @@ import RadiusSlider from '@/components/dashboard/RadiusSlider';
 import GeoStatusBanner from '@/components/dashboard/GeoStatusBanner';
 import TaskFeedItem from '@/components/dashboard/TaskFeedItem';
 import SuggestChallengeModal from '@/components/voting/SuggestChallengeModal';
+import GeoBlockedScreen from '@/components/dashboard/GeoBlockedScreen';
 
 // Haversine formula — returns distance in miles between two lat/lng points
 function haversineDistance(lat1, lon1, lat2, lon2) {
@@ -76,6 +77,10 @@ export default function Home() {
   }, [tasks, userCoords, radius]);
 
   const nearbyCount = filteredTasks.length;
+
+  if (geoStatus === 'denied') {
+    return <GeoBlockedScreen onRetry={requestLocation} />;
+  }
 
   return (
     <div className="min-h-screen relative">
