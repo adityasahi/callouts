@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, MapPin, User } from 'lucide-react';
+import { Home, MapPin, User, LogIn, LogOut } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import DareZoneLogo from '@/components/DareZoneLogo';
 import ThemeToggle from '@/components/ThemeToggle';
 import AppFooter from '@/components/layout/AppFooter';
+import { Button } from '@/components/ui/button';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
@@ -50,8 +51,21 @@ export default function AppLayout() {
         <div className="max-w-lg mx-auto flex items-center gap-2.5 px-4 py-2.5">
           <DareZoneLogo />
           <span className="font-heading font-bold text-lg tracking-tight text-foreground">Callouts</span>
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
+            {user ? (
+              <Button size="sm" variant="ghost" className="text-xs h-8 px-3 rounded-lg" onClick={() => base44.auth.logout()}>
+                <LogOut className="w-3.5 h-3.5 mr-1" />
+                Log Out
+              </Button>
+            ) : (
+              <Button size="sm" className="text-xs h-8 px-3 rounded-lg font-heading font-semibold" asChild>
+                <Link to="/login">
+                  <LogIn className="w-3.5 h-3.5 mr-1" />
+                  Sign In
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </header>

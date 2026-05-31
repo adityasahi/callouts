@@ -64,19 +64,24 @@ const AuthenticatedApp = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          {/* Public routes — visible to logged-out users */}
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/legends" element={<Legends />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Route>
+
+          {/* Protected routes — require login */}
           <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
             <Route element={<AppLayout />}>
-              <Route path="/" element={<Home />} />
               <Route path="/challenges" element={<Challenges />} />
               <Route path="/challenge/:id" element={<ChallengeDetail />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/legends" element={<Legends />} />
               <Route path="/voting-booth" element={<VotingBooth />} />
               <Route path="/activity" element={<Activity />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
             </Route>
           </Route>
           <Route path="*" element={<PageNotFound />} />

@@ -11,6 +11,8 @@ import GeoStatusBanner from '@/components/dashboard/GeoStatusBanner';
 import TaskFeedItem from '@/components/dashboard/TaskFeedItem';
 import SuggestChallengeModal from '@/components/voting/SuggestChallengeModal';
 import GeoBlockedScreen from '@/components/dashboard/GeoBlockedScreen';
+import { useAuthWall } from '@/lib/useAuthWall';
+import AuthWallModal from '@/components/AuthWallModal';
 
 // Haversine formula — returns distance in miles between two lat/lng points
 function haversineDistance(lat1, lon1, lat2, lon2) {
@@ -28,6 +30,7 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 export default function Home() {
   const [user, setUser] = useState(null);
   const [suggestOpen, setSuggestOpen] = useState(false);
+  const { requireAuth, authWallOpen, closeAuthWall } = useAuthWall(user);
   const [radius, setRadius] = useState(20);
   const [userCoords, setUserCoords] = useState(null); // { lat, lng }
   const [geoStatus, setGeoStatus] = useState('loading'); // loading | granted | denied
@@ -195,7 +198,7 @@ export default function Home() {
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.4, type: 'spring', stiffness: 300, damping: 20 }}
-          onClick={() => setSuggestOpen(true)}
+          onClick={() => requireAuth(() => setSuggestOpen(true))}
           className="fixed bottom-24 right-4 z-40 flex items-center gap-2 bg-primary text-primary-foreground font-heading font-semibold text-sm px-4 py-3 rounded-full shadow-lg shadow-primary/30 hover:bg-primary/90 active:scale-95 transition-transform"
         >
           <Plus className="w-4 h-4" />
@@ -208,6 +211,7 @@ export default function Home() {
         onClose={() => setSuggestOpen(false)}
         user={user}
       />
+      <AuthWallModal open={authWallOpen} onClose={closeAuthWall} />
 
         {/* Top Players */}
         {topUsers.length > 0 && (

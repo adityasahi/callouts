@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import CompleteTaskModal from './CompleteTaskModal';
 import SubmissionFeed from './SubmissionFeed';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAuthWall } from '@/lib/useAuthWall';
+import AuthWallModal from '@/components/AuthWallModal';
 
 const difficultyConfig = {
   easy:    { label: 'Easy',    cls: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' },
@@ -24,6 +26,7 @@ export default function TaskFeedItem({ task, user, index = 0 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const queryClient = useQueryClient();
   const diff = difficultyConfig[task.difficulty] || difficultyConfig.medium;
+  const { requireAuth, authWallOpen, closeAuthWall } = useAuthWall(user);
 
   const handleSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ['submissions-feed', task.id] });
@@ -82,7 +85,7 @@ export default function TaskFeedItem({ task, user, index = 0 }) {
             <Button
               size="sm"
               className="shrink-0 rounded-xl font-heading font-semibold text-xs h-8 px-3"
-              onClick={() => setModalOpen(true)}
+              onClick={() => requireAuth(() => setModalOpen(true))}
             >
               <Camera className="w-3.5 h-3.5 mr-1.5" />
               Complete
@@ -101,6 +104,7 @@ export default function TaskFeedItem({ task, user, index = 0 }) {
         onClose={() => setModalOpen(false)}
         onSuccess={handleSuccess}
       />
+      <AuthWallModal open={authWallOpen} onClose={closeAuthWall} />
     </>
   );
 }

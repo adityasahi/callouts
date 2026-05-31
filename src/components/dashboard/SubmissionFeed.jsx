@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import CommentThreadModal from './CommentThreadModal';
 import LazyImage from '@/components/ui/LazyImage';
+import { useAuthWall } from '@/lib/useAuthWall';
+import AuthWallModal from '@/components/AuthWallModal';
 
 function CommentCount({ submissionId }) {
   const { data: comments = [] } = useQuery({
@@ -16,13 +18,13 @@ function CommentCount({ submissionId }) {
   return <span className="text-[10px] font-medium">{comments.length}</span>;
 }
 
-function SubmissionRow({ sub, user, onCommentClick }) {
+function SubmissionRow({ sub, user, onCommentClick, onAuthWall }) {
   const queryClient = useQueryClient();
   const hasVoted = sub.voters?.includes(user?.id);
 
   const vote = useMutation({
     mutationFn: async (direction) => {
-      if (!user) { toast.error('Log in to vote'); return; }
+      if (!user) { onAuthWall(); return; }
       const voters = sub.voters || [];
       if (voters.includes(user.id)) { toast.error("You've already voted on this"); return; }
       const delta = direction === 'up' ? 1 : -1;
@@ -83,7 +85,7 @@ function SubmissionRow({ sub, user, onCommentClick }) {
       <div className="flex items-center gap-2 shrink-0">
         {/* Comment button */}
         <button
-          onClick={() => onCommentClick(sub)}
+          onClick={() => user ? onCommentClick(sub) : onAuthWall()}
           className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-primary transition-colors"
         >
           <MessageCircle className="w-4 h-4" />
@@ -120,6 +122,7 @@ function SubmissionRow({ sub, user, onCommentClick }) {
 export default function SubmissionFeed({ taskId, user }) {
   const [expanded, setExpanded] = useState(false);
   const [activeSubmission, setActiveSubmission] = useState(null);
+  const { requireAuth, authWallOpen, closeAuthWall } = useAuthWall(user);
 
   const { data: allSubmissions = [] } = useQuery({
     queryKey: ['submissions-feed', taskId],
@@ -146,6 +149,7 @@ export default function SubmissionFeed({ taskId, user }) {
               sub={sub}
               user={user}
               onCommentClick={setActiveSubmission}
+              onAuthWall={() => requireAuth(() => {})}
             />
           ))}
         </AnimatePresence>
@@ -170,6 +174,7 @@ export default function SubmissionFeed({ taskId, user }) {
         open={!!activeSubmission}
         onClose={() => setActiveSubmission(null)}
       />
+      <AuthWallModal open={authWallOpen} onClose={closeAuthWall} />
     </>
   );
 }
