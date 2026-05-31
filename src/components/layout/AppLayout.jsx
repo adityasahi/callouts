@@ -4,6 +4,7 @@ import { Home, MapPin, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
+import DareZoneLogo from '@/components/DareZoneLogo';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
@@ -41,6 +42,14 @@ export default function AppLayout() {
       <main className="pb-20">
         <Outlet />
       </main>
+
+      {/* Top Nav Bar with Logo */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-xl border-b border-border">
+        <div className="max-w-lg mx-auto flex items-center gap-2.5 px-4 py-2.5">
+          <DareZoneLogo />
+          <span className="font-heading font-bold text-lg tracking-tight">DareZone</span>
+        </div>
+      </header>
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-t border-border">

@@ -32,13 +32,22 @@ function SubmissionRow({ sub, user, onCommentClick }) {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['submissions-feed', sub.task_id] }),
   });
 
+  const votes = sub.community_votes || 0;
+  const isNearBuried = votes <= -3 && votes >= -4;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -6 }}
-      className="flex gap-3 bg-card border border-border rounded-xl p-3 items-start"
+      className="flex flex-col gap-2 bg-card border border-border rounded-xl p-3"
     >
+      {isNearBuried && (
+        <div className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1">
+          ⚠️ Being buried by the community
+        </div>
+      )}
+      <div className="flex gap-3 items-start">
       {/* Thumbnail */}
       {sub.image_url && (
         <img src={sub.image_url} alt="" className="w-14 h-14 rounded-lg object-cover shrink-0" />
@@ -70,8 +79,9 @@ function SubmissionRow({ sub, user, onCommentClick }) {
           }`}
         >
           <Heart className={`w-4 h-4 ${hasVoted ? 'fill-primary' : ''}`} />
-          <span className="text-[10px] font-medium">{sub.community_votes || 0}</span>
+          <span className="text-[10px] font-medium">{votes}</span>
         </button>
+      </div>
       </div>
     </motion.div>
   );
@@ -81,10 +91,13 @@ export default function SubmissionFeed({ taskId, user }) {
   const [expanded, setExpanded] = useState(false);
   const [activeSubmission, setActiveSubmission] = useState(null);
 
-  const { data: submissions = [] } = useQuery({
+  const { data: allSubmissions = [] } = useQuery({
     queryKey: ['submissions-feed', taskId],
     queryFn: () => base44.entities.Submission.filter({ task_id: taskId }, '-community_votes'),
   });
+
+  // Hide buried submissions from the feed
+  const submissions = allSubmissions.filter(s => s.status !== 'buried');
 
   if (submissions.length === 0) return null;
 

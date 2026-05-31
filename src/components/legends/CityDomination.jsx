@@ -2,16 +2,15 @@ import { motion } from 'framer-motion';
 import { Shield } from 'lucide-react';
 
 const FACTION_COLORS = {
-  Wolves:  { bar: 'bg-sky-500',    text: 'text-sky-600',    light: 'bg-sky-50 border-sky-200'    },
-  Ravens:  { bar: 'bg-violet-500', text: 'text-violet-600', light: 'bg-violet-50 border-violet-200' },
-  Vipers:  { bar: 'bg-emerald-500',text: 'text-emerald-600',light: 'bg-emerald-50 border-emerald-200' },
-  Phoenix: { bar: 'bg-orange-500', text: 'text-orange-600', light: 'bg-orange-50 border-orange-200' },
+  Northside: { bar: 'bg-sky-500',     text: 'text-sky-600',     light: 'bg-sky-50 border-sky-200'     },
+  Southside: { bar: 'bg-orange-500',  text: 'text-orange-600',  light: 'bg-orange-50 border-orange-200'  },
+  Eastside:  { bar: 'bg-violet-500',  text: 'text-violet-600',  light: 'bg-violet-50 border-violet-200'  },
+  Westside:  { bar: 'bg-emerald-500', text: 'text-emerald-600', light: 'bg-emerald-50 border-emerald-200' },
 };
 
-const FACTIONS = ['Wolves', 'Ravens', 'Vipers', 'Phoenix'];
+const FACTIONS = ['Northside', 'Southside', 'Eastside', 'Westside'];
 
 export default function CityDomination({ users, userFaction }) {
-  // Tally points per faction
   const totals = FACTIONS.reduce((acc, f) => {
     acc[f] = users
       .filter((u) => u.faction === f)
@@ -20,13 +19,11 @@ export default function CityDomination({ users, userFaction }) {
   }, {});
 
   const grandTotal = Object.values(totals).reduce((a, b) => a + b, 0) || 1;
-
   const sorted = [...FACTIONS].sort((a, b) => totals[b] - totals[a]);
   const leader = sorted[0];
 
   return (
     <div className="bg-card border border-border rounded-2xl p-4 mb-5 shadow-sm">
-      {/* Header */}
       <div className="flex items-center gap-2 mb-3">
         <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
           <Shield className="w-4 h-4 text-primary" />
@@ -34,7 +31,7 @@ export default function CityDomination({ users, userFaction }) {
         <div>
           <h2 className="font-heading font-bold text-sm">City Domination</h2>
           <p className="text-[10px] text-muted-foreground">
-            <span className={`font-semibold ${FACTION_COLORS[leader]?.text}`}>{leader}</span> are winning the city
+            <span className={`font-semibold ${FACTION_COLORS[leader]?.text}`}>{leader}</span> is winning the city
           </p>
         </div>
       </div>
@@ -58,7 +55,7 @@ export default function CityDomination({ users, userFaction }) {
         })}
       </div>
 
-      {/* Legend row */}
+      {/* Legend */}
       <div className="flex flex-wrap gap-2">
         {sorted.map((faction) => {
           const colors = FACTION_COLORS[faction];

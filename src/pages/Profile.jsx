@@ -39,8 +39,13 @@ export default function Profile() {
         <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-accent mx-auto flex items-center justify-center text-2xl font-bold text-white">
           {user.full_name?.[0]?.toUpperCase() || '?'}
         </div>
-        <h1 className="font-heading font-bold text-xl mt-3">{user.full_name || 'Anonymous'}</h1>
+        <h1 className="font-heading font-bold text-xl mt-3">{user.alter_ego || user.full_name || 'Anonymous'}</h1>
         <p className="text-sm text-muted-foreground mt-0.5">{user.email}</p>
+        {user.faction && (
+          <span className="inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+            📍 {user.faction}
+          </span>
+        )}
       </motion.div>
 
       {/* Stats */}

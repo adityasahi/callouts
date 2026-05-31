@@ -18,10 +18,10 @@ const AVATAR_COLORS = {
 };
 
 const FACTION_COLORS = {
-  Wolves:  'text-sky-600',
-  Ravens:  'text-violet-600',
-  Vipers:  'text-emerald-600',
-  Phoenix: 'text-orange-600',
+  Northside: 'text-sky-600',
+  Southside: 'text-orange-600',
+  Eastside:  'text-violet-600',
+  Westside:  'text-emerald-600',
 };
 
 export default function LeaderboardRow({ user, rank, isCurrentUser, index }) {
