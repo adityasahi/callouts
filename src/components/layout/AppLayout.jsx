@@ -44,7 +44,7 @@ export default function AppLayout() {
       </main>
 
       {/* Top Nav Bar with Logo */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-xl border-b border-border safe-top">
+      <header className="fixed top-0 left-0 right-0 z-40 bg-card/80 backdrop-blur-xl border-b border-border safe-top" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="max-w-lg mx-auto flex items-center gap-2.5 px-4 py-2.5">
           <DareZoneLogo />
           <span className="font-heading font-bold text-lg tracking-tight text-foreground">DareZone</span>
@@ -52,7 +52,7 @@ export default function AppLayout() {
       </header>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-t border-border">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-t border-border" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="max-w-lg mx-auto flex items-center justify-around py-2 px-4">
           {navItems.map((item) => {
             const { path, label } = item;
@@ -61,7 +61,7 @@ export default function AppLayout() {
               <Link
                 key={path}
                 to={path}
-                className="relative flex flex-col items-center gap-0.5 py-1 px-3"
+                className="relative flex flex-col items-center gap-0.5 py-1 px-3 no-select"
               >
                 {isActive && (
                   <motion.div

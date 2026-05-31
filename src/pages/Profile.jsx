@@ -2,8 +2,13 @@ import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Trophy, Image, LogOut, MapPin, Zap } from 'lucide-react';
+import { Trophy, Image, LogOut, MapPin, Zap, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -101,12 +106,42 @@ export default function Profile() {
       {/* Logout */}
       <Button
         variant="outline"
-        className="w-full rounded-xl mb-8"
+        className="w-full rounded-xl mb-3"
         onClick={() => base44.auth.logout()}
       >
         <LogOut className="w-4 h-4 mr-2" />
         Log Out
       </Button>
+
+      {/* Delete Account */}
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="ghost" className="w-full rounded-xl mb-8 text-destructive hover:text-destructive hover:bg-destructive/10">
+            <Trash2 className="w-4 h-4 mr-2" />
+            Delete Account
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete your account?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action is permanent. All your submissions, points, and activity will be lost and cannot be recovered.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={async () => {
+                await base44.entities.User.delete(user.id);
+                base44.auth.logout();
+              }}
+            >
+              Yes, delete my account
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -24,7 +24,6 @@ function SubmissionRow({ sub, user, onCommentClick }) {
     mutationFn: async (direction) => {
       if (!user) { toast.error('Log in to vote'); return; }
       const voters = sub.voters || [];
-      // Strict one-vote-per-user enforcement
       if (voters.includes(user.id)) { toast.error("You've already voted on this"); return; }
       const delta = direction === 'up' ? 1 : -1;
       await base44.entities.Submission.update(sub.id, {
@@ -32,7 +31,28 @@ function SubmissionRow({ sub, user, onCommentClick }) {
         voters: [...voters, user.id],
       });
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['submissions-feed', sub.task_id] }),
+    onMutate: async (direction) => {
+      if (!user) return;
+      const queryKey = ['submissions-feed', sub.task_id];
+      await queryClient.cancelQueries({ queryKey });
+      const previous = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData(queryKey, (old = []) =>
+        old.map((s) =>
+          s.id === sub.id
+            ? {
+                ...s,
+                community_votes: (s.community_votes || 0) + (direction === 'up' ? 1 : -1),
+                voters: [...(s.voters || []), user.id],
+              }
+            : s
+        )
+      );
+      return { previous };
+    },
+    onError: (_err, _dir, ctx) => {
+      if (ctx?.previous) queryClient.setQueryData(['submissions-feed', sub.task_id], ctx.previous);
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ['submissions-feed', sub.task_id] }),
   });
 
   return (
