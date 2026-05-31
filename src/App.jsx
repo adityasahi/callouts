@@ -15,6 +15,7 @@ import Home from '@/pages/Home';
 import Challenges from '@/pages/Challenges';
 import ChallengeDetail from '@/pages/ChallengeDetail';
 import Leaderboard from '@/pages/Leaderboard';
+import Legends from '@/pages/Legends';
 import Profile from '@/pages/Profile';
 
 const AuthenticatedApp = () => {
@@ -49,6 +50,7 @@ const AuthenticatedApp = () => {
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/challenge/:id" element={<ChallengeDetail />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/legends" element={<Legends />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>

@@ -49,6 +49,21 @@
       ],
       "default": "sky",
       "description": "Color theme for the user's avatar badge"
+    },
+    "current_streak": {
+      "type": "number",
+      "default": 0,
+      "description": "Current consecutive days active streak"
+    },
+    "faction": {
+      "type": "string",
+      "enum": [
+        "Wolves",
+        "Ravens",
+        "Vipers",
+        "Phoenix"
+      ],
+      "description": "The faction this user belongs to"
     }
   },
   "required": []

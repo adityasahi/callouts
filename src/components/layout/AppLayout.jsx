@@ -1,11 +1,11 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, MapPin, Trophy, User, Plus } from 'lucide-react';
+import { Home, MapPin, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
   { path: '/challenges', icon: MapPin, label: 'Challenges' },
-  { path: '/leaderboard', icon: Trophy, label: 'Rankings' },
+  { path: '/legends', emoji: '🏆', label: 'Legends' },
   { path: '/profile', icon: User, label: 'Profile' },
 ];
 
@@ -21,7 +21,8 @@ export default function AppLayout() {
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-t border-border">
         <div className="max-w-lg mx-auto flex items-center justify-around py-2 px-4">
-          {navItems.map(({ path, icon: Icon, label }) => {
+          {navItems.map((item) => {
+            const { path, label } = item;
             const isActive = location.pathname === path;
             return (
               <Link
@@ -36,11 +37,17 @@ export default function AppLayout() {
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
-                <Icon
+                {item.emoji ? (
+                <span className={`text-xl leading-none transition-opacity ${isActive ? 'opacity-100' : 'opacity-50'}`}>
+                  {item.emoji}
+                </span>
+              ) : (
+                <item.icon
                   className={`w-5 h-5 transition-colors ${
                     isActive ? 'text-primary' : 'text-muted-foreground'
                   }`}
                 />
+              )}
                 <span
                   className={`text-[10px] font-medium transition-colors ${
                     isActive ? 'text-primary' : 'text-muted-foreground'
