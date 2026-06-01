@@ -29,7 +29,7 @@ import About from '@/pages/About';
 import Contact from '@/pages/Contact';
 
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const { isLoadingAuth, isLoadingPublicSettings, authError } = useAuth();
   const location = useLocation();
 
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -43,10 +43,9 @@ const AuthenticatedApp = () => {
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      navigateToLogin();
-      return null;
     }
+    // 'auth_required' is no longer fatal — the app is publicly accessible
+    // ProtectedRoute handles per-route auth gating
   }
 
   return (
